@@ -1,32 +1,29 @@
-# React + TypeScript + Vite
+# rc-frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Frontend for Redclew, built with [Next.js](https://nextjs.org) (App Router) + TypeScript.
 
-Currently, two official plugins are available:
+## Development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```sh
+pnpm install
+pnpm dev      # http://localhost:3000
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Scripts
+
+- `pnpm dev` — start the dev server
+- `pnpm build` — production build (`output: "standalone"`)
+- `pnpm start` — serve the production build
+- `pnpm lint` — lint with oxlint
+
+## Docker
+
+The image is a two-stage build: it compiles the app, then runs the Next.js
+standalone server (`node server.js`) directly in a `node:26-alpine` runtime —
+no nginx involved. The server listens on `$PORT` (default `3000`), so it also
+picks up the port injected by Cloud Run.
+
+```sh
+docker build -t rc-frontend .
+docker run -p 3000:3000 rc-frontend
+```
